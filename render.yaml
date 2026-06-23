@@ -3,9 +3,15 @@ services:
     name: mi-sistema-administrativo
     runtime: static
     plan: free
-    buildCommand: npm run build
+    branch: main
+    autoDeploy: true
+    buildCommand: npm run check
     staticPublishPath: ./dist
     envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_BASE_URL
+        sync: false
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_PUBLISHABLE_KEY
@@ -17,3 +23,9 @@ services:
       - path: /*
         name: Referrer-Policy
         value: strict-origin-when-cross-origin
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Permissions-Policy
+        value: camera=(), microphone=(), geolocation=()

@@ -1,0 +1,41 @@
+name: Pruebas
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pruebas:
+    name: Compilar y probar
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+        if: ${{ hashFiles('package-lock.json') != '' }}
+      - name: Preparar Node.js sin caché
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+        if: ${{ hashFiles('package-lock.json') == '' }}
+      - name: Validar, probar y compilar
+        run: npm run check
+        env:
+          APP_ENV: test
+          APP_BASE_URL: http://localhost:4173
+          SUPABASE_URL: https://example.supabase.co
+          SUPABASE_PUBLISHABLE_KEY: sb_publishable_example
