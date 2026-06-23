@@ -7,7 +7,13 @@ test('la compilación genera una página con el mensaje de bienvenida', async ()
   await new Promise((resolve, reject) => {
     const child = spawn(process.execPath, ['scripts/build.mjs'], {
       stdio: 'ignore',
-      env: { ...process.env, SUPABASE_URL: '', SUPABASE_PUBLISHABLE_KEY: '' },
+      env: {
+        ...process.env,
+        APP_ENV: 'test',
+        APP_BASE_URL: 'http://localhost:4173',
+        SUPABASE_URL: '',
+        SUPABASE_PUBLISHABLE_KEY: '',
+      },
     });
     child.on('exit', (code) => code === 0 ? resolve() : reject(new Error(`build terminó con ${code}`)));
   });
@@ -21,4 +27,6 @@ test('la compilación genera una página con el mensaje de bienvenida', async ()
   assert.match(financialRun, /Corrida financiera/);
   assert.match(html, /id="login-form"/);
   assert.match(config, /window\.APP_CONFIG/);
+  assert.match(config, /"appEnv":"test"/);
+  assert.doesNotMatch(config, /SERVICE_ROLE|SECRET_KEY|DATABASE_URL/);
 });

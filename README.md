@@ -1,22 +1,29 @@
 # Mi Sistema Administrativo
 
-Primera versión pública del sistema. Muestra un mensaje de bienvenida almacenado en Supabase y usa un texto local de respaldo mientras se configura la conexión.
+Sitio administrativo estático con autenticación de Supabase y publicación automática en Render.
 
-## Uso local
+## Trabajar localmente
 
-1. Copia `.env.example` como `.env` y agrega la URL y la clave publicable de Supabase.
+Requiere Node.js 20.
+
+1. Copia `.env.example` como `.env` y completa la URL y la clave publicable de tu proyecto de Supabase.
 2. Ejecuta `npm run dev`.
 3. Abre `http://localhost:4173`.
 
+Antes de abrir un Pull Request, ejecuta:
+
+```text
+npm run check
+```
+
 ## Supabase
 
-Ejecuta `supabase/migrations/001_welcome_messages.sql` en el editor SQL del proyecto. La migración crea una tabla pública de solo lectura con RLS habilitado.
+Aplica en orden los archivos de `supabase/migrations/`. La migración actual crea una tabla pública de sólo lectura con RLS habilitado.
 
-## Publicación en Render
+Este frontend sólo puede usar una clave publicable. Nunca agregues una clave `service_role`, clave secreta, credenciales de Gmail o contraseñas a variables usadas por la compilación.
 
-El archivo `render.yaml` configura un sitio estático. En Render se deben definir:
+## GitHub y Render
 
-- `SUPABASE_URL`
-- `SUPABASE_PUBLISHABLE_KEY`
+Las mejoras se hacen en ramas, pasan por Pull Request y GitHub Actions, y llegan a producción al fusionarse en `main`. Render toma `main`, ejecuta todas las validaciones y publica `dist/`.
 
-La clave publicable es apta para el navegador; nunca se debe usar una clave `service_role` en este proyecto.
+La configuración completa, protecciones de ramas y pasos de despliegue están en [docs/FLUJO-DE-TRABAJO.md](docs/FLUJO-DE-TRABAJO.md).
