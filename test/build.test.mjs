@@ -38,6 +38,7 @@ test('la compilación genera una página con el mensaje de bienvenida', async ()
   assert.match(sales, /Ventas/);
   assert.match(users, /SUPER ADMINISTRADOR/);
   assert.match(session, /requireSession/);
+  assert.match(session, /auth\/v1\/user/);
   assert.match(html, /id="login-form"/);
   assert.match(config, /window\.APP_CONFIG/);
   assert.match(config, /"appEnv":"test"/);
