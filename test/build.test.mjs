@@ -13,7 +13,12 @@ test('la compilación genera una página con el mensaje de bienvenida', async ()
   });
 
   const html = await readFile('dist/index.html', 'utf8');
+  const panel = await readFile('dist/panel.html', 'utf8');
+  const financialRun = await readFile('dist/corrida-financiera.html', 'utf8');
   const config = await readFile('dist/config.js', 'utf8');
   assert.match(html, /Bienvenido/);
+  assert.match(panel, /Corrida financiera/);
+  assert.match(financialRun, /Corrida financiera/);
+  assert.match(html, /id="login-form"/);
   assert.match(config, /window\.APP_CONFIG/);
 });
