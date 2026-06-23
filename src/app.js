@@ -1,32 +1,6 @@
-const fallbackMessage = 'Bienvenido';
-const heading = document.querySelector('#welcome-message');
-
-async function loadWelcomeMessage() {
-  const { supabaseUrl, supabasePublishableKey } = window.APP_CONFIG ?? {};
-
-  if (!supabaseUrl || !supabasePublishableKey) {
-    heading.textContent = fallbackMessage;
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      `${supabaseUrl}/rest/v1/welcome_messages?select=message&active=eq.true&order=created_at.desc&limit=1`,
-      {
-        headers: {
-          apikey: supabasePublishableKey,
-          Authorization: `Bearer ${supabasePublishableKey}`,
-        },
-      },
-    );
-
-    if (!response.ok) throw new Error(`Supabase respondió ${response.status}`);
-    const [record] = await response.json();
-    heading.textContent = record?.message?.trim() || fallbackMessage;
-  } catch (error) {
-    console.warn('No fue posible cargar el mensaje remoto.', error);
-    heading.textContent = fallbackMessage;
-  }
-}
-
-loadWelcomeMessage();
+const form=document.querySelector('#login-form');const emailInput=document.querySelector('#email');const passwordInput=document.querySelector('#password');const rememberInput=document.querySelector('#remember');const toggleButton=document.querySelector('.password-toggle');const submitButton=document.querySelector('.submit-button');const messageBox=document.querySelector('#form-message');const forgotButton=document.querySelector('#forgot-password');
+function setFieldError(input,message=''){const field=input.closest('.field');const error=field.querySelector('.field-error');field.classList.toggle('invalid',Boolean(message));input.setAttribute('aria-invalid',String(Boolean(message)));error.textContent=message}function showMessage(message,type){messageBox.textContent=message;messageBox.className=`form-message visible ${type}`}function clearMessage(){messageBox.textContent='';messageBox.className='form-message'}
+function validateForm(){const email=emailInput.value.trim();const password=passwordInput.value;const validEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);setFieldError(emailInput,!email?'Escribe tu correo electrónico.':!validEmail?'Ingresa un correo válido.':'');setFieldError(passwordInput,!password?'Escribe tu contraseña.':password.length<6?'La contraseña debe tener al menos 6 caracteres.':'');return validEmail&&password.length>=6}function setLoading(loading){submitButton.disabled=loading;submitButton.classList.toggle('loading',loading);submitButton.querySelector('span').textContent=loading?'Verificando…':'Iniciar sesión'}
+toggleButton.addEventListener('click',()=>{const showing=passwordInput.type==='text';passwordInput.type=showing?'password':'text';toggleButton.setAttribute('aria-pressed',String(!showing));toggleButton.setAttribute('aria-label',showing?'Mostrar contraseña':'Ocultar contraseña');passwordInput.focus()});[emailInput,passwordInput].forEach(input=>{input.addEventListener('input',()=>{if(input.closest('.field').classList.contains('invalid'))validateForm();clearMessage()})});
+form.addEventListener('submit',async event=>{event.preventDefault();clearMessage();if(!validateForm())return;const{supabaseUrl,supabasePublishableKey}=window.APP_CONFIG??{};if(!supabaseUrl||!supabasePublishableKey){showMessage('El acceso aún no está conectado. Configura Supabase para habilitar el inicio de sesión.','error');return}setLoading(true);try{const response=await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`,{method:'POST',headers:{apikey:supabasePublishableKey,'Content-Type':'application/json'},body:JSON.stringify({email:emailInput.value.trim(),password:passwordInput.value})});const result=await response.json();if(!response.ok)throw new Error(response.status===400?'El correo o la contraseña no son correctos.':'No fue posible iniciar sesión. Intenta de nuevo.');const storage=rememberInput.checked?localStorage:sessionStorage;storage.setItem('mi-sistema-session',JSON.stringify({access_token:result.access_token,refresh_token:result.refresh_token,expires_at:Math.floor(Date.now()/1000)+result.expires_in,user:result.user}));showMessage('¡Acceso correcto! Tu panel administrativo está listo.','success');form.reset()}catch(error){showMessage(error.message||'Ocurrió un error inesperado. Intenta de nuevo.','error')}finally{setLoading(false)}});
+forgotButton.addEventListener('click',async()=>{clearMessage();const email=emailInput.value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){setFieldError(emailInput,'Escribe tu correo para recuperar la contraseña.');emailInput.focus();return}const{supabaseUrl,supabasePublishableKey}=window.APP_CONFIG??{};if(!supabaseUrl||!supabasePublishableKey){showMessage('La recuperación estará disponible al conectar Supabase.','error');return}forgotButton.disabled=true;try{await fetch(`${supabaseUrl}/auth/v1/recover`,{method:'POST',headers:{apikey:supabasePublishableKey,'Content-Type':'application/json'},body:JSON.stringify({email})});showMessage('Si existe una cuenta con ese correo, recibirás instrucciones para recuperar tu acceso.','success')}catch{showMessage('No fue posible enviar el correo. Revisa tu conexión e intenta de nuevo.','error')}finally{forgotButton.disabled=false}});
