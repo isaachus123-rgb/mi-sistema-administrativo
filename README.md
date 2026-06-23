@@ -20,6 +20,14 @@ npm run check
 
 Aplica en orden los archivos de `supabase/migrations/`. La migración actual crea una tabla pública de sólo lectura con RLS habilitado.
 
+La segunda migración crea perfiles y roles protegidos con RLS. Si ya hay una sola cuenta, será el primer superadministrador. Si existen varias, selecciona la tuya con:
+
+```sql
+update public.profiles set role = 'super_administrador' where email = 'tu@correo.com';
+```
+
+Publica también `supabase/functions/invite-user` para habilitar las invitaciones desde la pantalla **Usuarios**.
+
 Este frontend sólo puede usar una clave publicable. Nunca agregues una clave `service_role`, clave secreta, credenciales de Gmail o contraseñas a variables usadas por la compilación.
 
 ## GitHub y Render
