@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usuarios | Mi Sistema</title>
+  <link rel="stylesheet" href="./styles.css" /><link rel="stylesheet" href="./app-layout.css" /><link rel="stylesheet" href="./usuarios.css" />
+</head>
+<body class="app-body">
+  <aside class="app-sidebar">
+    <a class="app-brand brand" href="./panel.html"><span class="brand-mark">◆</span><span>MI SISTEMA</span></a>
+    <nav class="app-nav" aria-label="Navegación principal">
+      <a class="app-nav-link" href="./panel.html"><span>Inicio</span></a>
+      <a class="app-nav-link" href="./corrida-financiera.html"><span>Finanzas</span></a>
+      <a class="app-nav-link" href="./inversionistas.html"><span>Inversionistas</span></a>
+      <a class="app-nav-link" href="./obra.html"><span>Obra</span></a>
+      <a class="app-nav-link" href="./ventas.html"><span>Ventas</span></a>
+      <a class="app-nav-link active" href="./usuarios.html" aria-current="page"><span>Usuarios</span></a>
+    </nav>
+    <a class="app-nav-link app-logout" href="./index.html" data-logout><span>Cerrar sesión</span></a>
+  </aside>
+  <main class="app-main">
+    <header class="app-header">Administración total</header>
+    <section class="users-content">
+      <div><p class="app-eyebrow">SUPER ADMINISTRADOR</p><h1>Usuarios</h1><p class="users-intro">Invita personas y controla su nivel de acceso.</p></div>
+      <form id="invite-form" class="invite-card">
+        <h2>Invitar usuario</h2>
+        <label>Nombre<input name="full_name" autocomplete="name" maxlength="100" /></label>
+        <label>Correo<input name="email" type="email" autocomplete="email" required /></label>
+        <label>Rol<select name="role"><option value="usuario">Usuario</option><option value="administrador">Administrador</option><option value="super_administrador">Super administrador</option></select></label>
+        <button class="admin-button" type="submit">Enviar invitación</button>
+        <p id="users-message" role="status" aria-live="polite"></p>
+      </form>
+      <section class="users-list-card" aria-labelledby="users-title">
+        <div class="list-heading"><h2 id="users-title">Equipo</h2><button id="refresh-users" type="button">Actualizar</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Usuario</th><th>Rol</th><th>Estado</th></tr></thead><tbody id="users-body"><tr><td colspan="3">Cargando usuarios…</td></tr></tbody></table></div>
+      </section>
+    </section>
+  </main>
+  <script src="./config.js"></script><script type="module" src="./usuarios.js"></script>
+</body>
+</html>
