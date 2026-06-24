@@ -2,3 +2,6 @@
 @media(max-width:700px){.app-body{display:block}.app-sidebar{position:static;width:100%;padding:16px 14px 12px}.app-brand{padding:0 4px}.app-nav{grid-template-columns:1fr 1fr;margin-top:18px}.app-nav-link{justify-content:center;padding:9px;font-size:.8rem}.app-logout{display:none}.app-main{width:100%;margin-left:0}.app-header{height:58px}.app-content{padding-top:55px}}
 
 .app-sidebar{overflow-y:auto}
+
+/* Identidad Auri Desarrollos */
+.app-body{color:var(--blue-deep);background:var(--ivory)}.app-sidebar{color:var(--ivory);background:radial-gradient(circle at 20% 100%,rgba(193,169,117,.12),transparent 32%),linear-gradient(165deg,var(--blue-deep),#173746 68%,var(--green-dark));box-shadow:8px 0 30px rgba(15,42,60,.1)}.app-brand .brand-logo img{height:43px}.app-brand .brand-descriptor{font-size:.63rem}.app-nav-link{color:var(--gray-pearl)}.app-nav-link:hover{color:#fff;background:rgba(255,255,255,.07)}.app-nav-link.active{color:var(--ivory);border-color:rgba(193,169,117,.25);background:rgba(193,169,117,.17);box-shadow:inset 3px 0 0 var(--gold-soft)}.app-main{background:linear-gradient(145deg,#fff 0%,var(--ivory) 76%)}.app-header{color:var(--taupe);background:rgba(255,255,255,.72)}.app-eyebrow{color:var(--blue-slate)!important}.app-content h1{color:var(--blue-deep)}

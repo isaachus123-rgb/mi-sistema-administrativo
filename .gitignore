@@ -3,5 +3,6 @@ dist/
 .env.*
 !.env.example
 node_modules/
+.pnpm-store/
 .repo/
 .DS_Store
