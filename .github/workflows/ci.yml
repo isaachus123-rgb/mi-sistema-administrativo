@@ -24,13 +24,13 @@ jobs:
       - name: Preparar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
         if: ${{ hashFiles('package-lock.json') != '' }}
       - name: Preparar Node.js sin caché
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
         if: ${{ hashFiles('package-lock.json') == '' }}
       - name: Validar, probar y compilar
         run: npm run check
